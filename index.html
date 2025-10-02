@@ -3,216 +3,509 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Happy Birthday Nini 🎂</title>
+<title>Happy Birthday!</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600&display=swap');
-
-  :root {
-    --pink: #ffb6b9;
-    --pink-alert: #d94f5a;
-    --mint: #b8f2e6;
-    --cream: #fff8f0;
-    --dark: #333;
-    --light: #fefefe;
-  }
-
-  *, *::before, *::after { box-sizing: border-box; }
+  /* Base reset and fonts */
   body {
-    margin: 0;
-    background: var(--cream);
-    color: var(--dark);
-    font-family: 'Quicksand', sans-serif;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 2rem 1rem 3rem;
-    min-height: 100vh;
-    position: relative;
+    margin: 0; padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #ffe3f1;
+    color: #333;
     overflow-x: hidden;
+    transition: background 0.5s ease;
   }
-  #confettiCanvas {
-    position: fixed; top:0; left:0; width:100vw; height:100vh; pointer-events:none; z-index:0;
-  }
+
   h1 {
-    font-family: 'Pacifico', cursive;
-    font-size: 3rem;
-    margin-bottom: 0.25rem;
-    color: var(--pink);
     text-align: center;
-    position: relative;
-    z-index: 10;
+    font-size: 3.2rem;
+    margin-top: 1rem;
+    opacity: 0;
+    transform: translateY(-20px);
+    animation: fadeInUp 1s forwards 0.3s;
   }
-  h2 {
-    font-weight: 600;
-    color: var(--mint);
-    margin-top: 0;
-    margin-bottom: 2rem;
+
+  /* Friendly birthday message */
+  #friendly-msg {
     text-align: center;
-    position: relative;
-    z-index: 10;
+    font-size: 1.3rem;
+    margin: 0.3rem auto 1.5rem;
+    max-width: 600px;
+    color: #5a2a50;
+    opacity: 0;
+    transform: translateY(-10px);
+    animation: fadeInUp 1s forwards 0.7s;
   }
-  main {
-    background: var(--light);
-    max-width: 450px;
-    width: 100%;
+
+  /* Container for the cake and form */
+  #main-container {
+    max-width: 520px;
+    margin: 0 auto 3rem;
+    padding: 0 1rem;
+    opacity: 0;
+    animation: fadeInUp 1s forwards 1.1s;
+  }
+
+  /* Cake styling (simple) */
+  #cake {
+    width: 260px;
+    height: 260px;
+    background: linear-gradient(180deg, #ff94c2 0%, #e25499 100%);
+    border-radius: 40px 40px 20px 20px;
+    margin: 0 auto 2rem;
+    position: relative;
+    box-shadow: 0 6px 15px rgba(255, 75, 141, 0.6);
+  }
+  /* Candles */
+  .candle {
+    width: 12px; height: 40px;
+    background: #ffd9d9;
+    position: absolute;
+    top: 20px;
+    border-radius: 4px;
+    box-shadow: inset 0 2px 5px #fff1f1;
+  }
+  .candle:nth-child(1) { left: 60px; }
+  .candle:nth-child(2) { left: 120px; }
+  .candle:nth-child(3) { left: 180px; }
+  /* Flame */
+  .flame {
+    width: 14px; height: 20px;
+    background: radial-gradient(circle at center, #ffdb69 0%, #ff6f00 70%);
+    position: absolute;
+    top: -18px;
+    left: -1px;
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    filter: drop-shadow(0 0 2px #ffbf00);
+    animation: flicker 1.3s infinite alternate;
+  }
+
+  /* Form styles */
+  form {
+    background: #fff6fc;
     border-radius: 16px;
-    box-shadow: 0 10px 20px rgb(0 0 0 / 0.1);
-    padding: 2rem 2.5rem 3rem;
-    text-align: center;
-    position: relative;
-    z-index: 10;
-    outline-offset: 3px;
+    padding: 18px 22px 24px;
+    box-shadow: 0 6px 12px rgba(238, 121, 154, 0.35);
   }
-  main:focus-within { outline: 2px solid var(--mint); }
-  .hearts { pointer-events: none; position: fixed; top:0; left:0; width:100vw; height:100vh; overflow:visible; z-index:1; }
-  .heart { position:absolute; width:20px; height:18px; background:var(--pink); clip-path: polygon(50% 0%,100% 37%,82% 100%,50% 80%,18% 100%,0% 37%); opacity:0.8; animation: floatUp 6s ease-in-out forwards; filter: drop-shadow(0 0 2px #f7a8aa); }
-  @keyframes floatUp { 0% { transform: translateY(0) scale(1); opacity:0.8; } 100% { transform: translateY(-110vh) scale(1.3); opacity:0; } }
-  .cake-container { margin:0 auto 2.5rem; width:160px; cursor:pointer; }
-  .cake { position: relative; background: linear-gradient(135deg, #ffcad4 0%, #ff869b 100%); border-radius:20px 20px 10px 10px; height:110px; box-shadow: inset 0 -6px 12px #e17383aa; }
-  .cake-base { position:absolute; bottom:0; width:100%; height:24px; background:#d55c6f; border-radius:0 0 20px 20px; box-shadow: inset 0 -4px 6px #a2404baa; }
-  .frosting { position:absolute; top:-18px; width:100%; height:24px; background:#fff0f1; border-radius:20px 20px 8px 8px; box-shadow:0 4px 6px #ffb6c3cc; }
-  .candle { position:absolute; top:-48px; left:50%; transform: translateX(-50%); width:14px; height:38px; background:#ff4b70; border-radius:4px; box-shadow: inset 0 2px 4px #cc3954; }
-  .flame { position:absolute; top:-12px; left:50%; width:10px; height:14px; background: radial-gradient(circle at 50% 60%, #ffd747 60%, transparent 90%); border-radius:50% 50% 40% 40% / 60% 60% 30% 30%; filter: drop-shadow(0 0 4px #ffcc44); opacity:0; transform:translateX(-50%) scale(0.9); }
-  .flame.visible { opacity:1; box-shadow:0 0 16px 6px #ffe36a88,0 0 60px 16px #ffd74755; animation: flicker 1.1s infinite alternate, flameglow 1.5s infinite alternate; }
-  @keyframes flicker { 0%{ transform:translateX(-50%) scale(0.9) rotate(2deg); opacity:1;} 50%{ transform:translateX(-52%) scale(0.85) rotate(-2deg); opacity:0.85;} 100%{ transform:translateX(-50%) scale(0.9) rotate(2deg); opacity:1;} }
-  @keyframes flameglow {0%{filter:brightness(1.2);}100%{filter:brightness(2);}}
-  textarea { width:100%; min-height:70px; border-radius:12px; border:2px solid var(--pink); padding:0.8rem 1rem; font-family:inherit; font-size:1rem; resize:vertical; transition:border-color 0.3s ease; }
-  textarea:focus { border-color: var(--mint); outline: none; }
-  button { margin-top:0.8rem; background:var(--pink); border:none; border-radius:30px; color:white; font-weight:600; font-size:1rem; padding:0.6rem 1.6rem; cursor:pointer; box-shadow:0 4px 6px rgb(255 182 185 / 0.6); transition: background 0.3s ease; }
-  button[type="submit"]:hover, button[type="submit"]:focus { animation: bounce 0.6s; }
-  @keyframes bounce { 0%{transform:scale(1) translateY(0);}25%{transform:scale(1.1,0.94) translateY(-4px);}50%{transform:scale(0.95,1.08) translateY(2px);}75%{transform:scale(1.04,0.96) translateY(-1px);}100%{transform:scale(1) translateY(0);} }
-  #charCount { text-align:right; font-size:0.9rem; color: var(--pink); margin-top:0.2rem; transition: color 0.3s ease; }
-  #charCount.alert { color: var(--pink-alert); }
-  .replies-list { margin-top:1.5rem; max-height:130px; overflow-y:auto; border-top:1px solid #ffb6b9aa; padding-top:1rem; }
-  .reply-item { background:#ffe6e8; padding:0.5rem 1rem; margin-bottom:0.6rem; border-radius:12px; font-size:0.95rem; color:#6a3a43; }
-  .toggles { margin-top:2rem; display:flex; justify-content:center; gap:1rem; flex-wrap:wrap; }
-  .toggle-btn { background:var(--pink); border:none; border-radius:25px; padding:0.5rem 1.2rem; font-weight:600; cursor:pointer; color:white; box-shadow:0 4px 7px #f6a3a6bb; transition: background 0.3s ease; }
-  .toggle-btn:hover,.toggle-btn:focus { background:var(--mint); color:var(--dark); outline:none; animation:wiggle 0.5s; }
-  @keyframes wiggle {0%{transform:rotate(0deg);}20%{transform:rotate(-8deg);}40%{transform:rotate(8deg);}60%{transform:rotate(-4deg);}80%{transform:rotate(4deg);}100%{transform:rotate(0deg);}}
-  .popup { position:fixed; top:50%; left:50%; transform:translate(-50%,-50%) scale(0); background:var(--light); border-radius:20px; padding:2rem 2.5rem; box-shadow:0 8px 24px rgba(0,0,0,0.3); text-align:center; color:var(--pink); font-family:'Pacifico', cursive; font-size:1.8rem; z-index:20; transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), opacity 0.3s; user-select:none; opacity:0; }
-  .popup.show { transform:translate(-50%,-50%) scale(1.08); opacity:1; animation:popshow 0.35s cubic-bezier(0.34,1.56,0.64,1) 1; }
-  @keyframes popshow {0%{transform:translate(-50%,-50%) scale(0.6);}60%{transform:translate(-50%,-50%) scale(1.12);}100%{transform:translate(-50%,-50%) scale(1.08);}}
-  .popup.hide { transform:translate(-50%,-50%) scale(0.8); opacity:0; transition:transform 0.25s, opacity 0.25s; }
-  .popup button.close-popup { margin-top:1.5rem; background:var(--pink); border:none; color:white; font-weight:600; border-radius:25px; padding:0.5rem 1.4rem; cursor:pointer; }
-  .popup button.close-popup:hover,.popup button.close-popup:focus { background:var(--mint); color:var(--dark); outline:none; }
-  body.dark { background:#222; color:#eee; }
-  body.dark main { background:#333; box-shadow:0 8px 20px rgb(0 0 0 / 0.8); }
-  body.dark textarea { background:#555; border-color:#888; color:#eee; }
-  body.dark textarea:focus { border-color:var(--mint); }
-  body.dark .reply-item { background:#444; color:#ccc; }
-  body.dark .toggle-btn { box-shadow:0 4px 7px #8cf0e5bb; }
-  .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
-  @media(max-width:480px){ main{padding:1.5rem 1.5rem 2.5rem;} h1{font-size:2.4rem;} }
-  button:focus,textarea:focus,.cake-container:focus{ outline:3px solid var(--mint); outline-offset:2px; }
-  #toastMessage { position:fixed; bottom:1.5rem; left:50%; transform:translateX(-50%); background:var(--pink); color:white; border-radius:20px; padding:0.7rem 1.5rem; font-family:'Pacifico', cursive; font-size:1rem; opacity:0; pointer-events:none; transition:opacity 0.4s ease; z-index:50; }
-  #toastMessage.show { opacity:1; pointer-events:auto; }
+
+  label {
+    font-weight: 600;
+    font-size: 1rem;
+    display: block;
+    margin-bottom: 6px;
+    color: #b1466b;
+  }
+
+  input[type="text"], textarea {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 1rem;
+    border: 2px solid #ff9cc1;
+    border-radius: 12px;
+    resize: vertical;
+    transition: border-color 0.3s ease;
+    font-family: inherit;
+  }
+  input[type="text"]:focus, textarea:focus {
+    border-color: #d43869;
+    outline: none;
+  }
+
+  textarea {
+    min-height: 90px;
+    max-height: none; /* unlimited */
+  }
+
+  #charCount {
+    font-size: 0.85rem;
+    color: #b1466b;
+    margin-top: 4px;
+    text-align: right;
+  }
+
+  button {
+    background: #d43869;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 14px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    font-weight: 700;
+    margin-top: 14px;
+    transition: background-color 0.3s ease;
+    display: block;
+    width: 100%;
+  }
+  button:hover {
+    background: #a82e54;
+  }
+
+  /* Display wishes */
+  #wishes-container {
+    margin-top: 24px;
+    background: #fff1f9;
+    border-radius: 18px;
+    padding: 20px;
+    box-shadow: 0 6px 12px rgba(238, 121, 154, 0.25);
+    max-height: 280px;
+    overflow-y: auto;
+    font-size: 1.1rem;
+    color: #6f2844;
+  }
+
+  .wish-item {
+    margin-bottom: 14px;
+    border-bottom: 1px solid #f2c3d4;
+    padding-bottom: 8px;
+  }
+
+  .wish-item:last-child {
+    border-bottom: none;
+  }
+
+  .wish-name {
+    font-weight: 700;
+    color: #a8325f;
+  }
+
+  /* Confetti container */
+  #confetti-container {
+    pointer-events: none;
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    z-index: 9999;
+    overflow: visible;
+  }
+
+  /* Balloon styles */
+  .balloon {
+    position: fixed;
+    bottom: -120px;
+    width: 50px;
+    height: 70px;
+    border-radius: 60% 60% 60% 60% / 70% 70% 30% 30%;
+    opacity: 0.9;
+    filter: drop-shadow(0 2px 3px rgba(0,0,0,0.15));
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+  }
+  .balloon::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 15px;
+    background: #333;
+    border-radius: 3px;
+  }
+  .balloon.red { background: #ff6b81; animation-name: floatUp1; animation-duration: 9s;}
+  .balloon.blue { background: #4d90fe; animation-name: floatUp2; animation-duration: 10s;}
+  .balloon.green { background: #5ce1e6; animation-name: floatUp3; animation-duration: 11s;}
+  .balloon.pink { background: #f59ac1; animation-name: floatUp1; animation-duration: 8.5s;}
+  .balloon.orange { background: #ff9f43; animation-name: floatUp2; animation-duration: 9.2s;}
+
+  @keyframes floatUp1 {
+    0% { transform: translateX(0) translateY(0) rotate(0deg);}
+    50% { transform: translateX(15px) translateY(-150vh) rotate(15deg);}
+    100% { transform: translateX(0) translateY(-300vh) rotate(0deg);}
+  }
+  @keyframes floatUp2 {
+    0% { transform: translateX(0) translateY(0) rotate(0deg);}
+    50% { transform: translateX(-15px) translateY(-150vh) rotate(-15deg);}
+    100% { transform: translateX(0) translateY(-300vh) rotate(0deg);}
+  }
+  @keyframes floatUp3 {
+    0% { transform: translateX(0) translateY(0) rotate(0deg);}
+    50% { transform: translateX(10px) translateY(-150vh) rotate(10deg);}
+    100% { transform: translateX(0) translateY(-300vh) rotate(0deg);}
+  }
+
+  /* Confetti pieces */
+  .confetti {
+    position: fixed;
+    width: 12px;
+    height: 12px;
+    background-color: #f25c6c;
+    opacity: 0.9;
+    transform-origin: center center;
+    border-radius: 3px;
+    animation: confetti-fall linear infinite;
+  }
+  .confetti:nth-child(odd) {
+    background-color: #ffc759;
+  }
+  @keyframes confetti-fall {
+    0% {
+      transform: translateY(-20px) rotate(0deg);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(110vh) rotate(360deg);
+      opacity: 0;
+    }
+  }
+
+  /* Animations */
+  @keyframes fadeInUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes flicker {
+    0%, 100% { opacity: 1; filter: drop-shadow(0 0 3px #ffbf00);}
+    50% { opacity: 0.7; filter: drop-shadow(0 0 6px #ffdb69);}
+  }
+
+  /* Theme toggler */
+  #theme-toggle-container {
+    max-width: 520px;
+    margin: 0 auto 1rem;
+    padding: 0 1rem;
+    text-align: right;
+  }
+  #theme-select {
+    font-size: 1rem;
+    padding: 6px 12px;
+    border-radius: 8px;
+    border: 2px solid #ff9cc1;
+    background: #fff6fc;
+    color: #b1466b;
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+  }
+  #theme-select:hover, #theme-select:focus {
+    border-color: #d43869;
+    outline: none;
+  }
+
+  /* Themes */
+
+  body.theme-elegant {
+    background: #1b1b2f;
+    color: #e0d8f7;
+  }
+  body.theme-elegant h1 {
+    color: #f5c1ff;
+  }
+  body.theme-elegant #friendly-msg {
+    color: #d1c1f9;
+  }
+  body.theme-elegant form {
+    background: #322f4b;
+    box-shadow: 0 6px 15px rgba(150, 120, 255, 0.7);
+  }
+  body.theme-elegant label {
+    color: #b59fff;
+  }
+  body.theme-elegant input, body.theme-elegant textarea {
+    border-color: #9d84f7;
+    background: #3b3953;
+    color: #dcd9ff;
+  }
+  body.theme-elegant input:focus, body.theme-elegant textarea:focus {
+    border-color: #f8f1ff;
+  }
+  body.theme-elegant button {
+    background: #a972ff;
+  }
+  body.theme-elegant button:hover {
+    background: #7c55e2;
+  }
+  body.theme-elegant #wishes-container {
+    background: #2e2b4d;
+    color: #d7ccff;
+    box-shadow: 0 6px 15px rgba(150, 120, 255, 0.4);
+  }
+
+  body.theme-minimal {
+    background: #f9f9f9;
+    color: #333;
+  }
+  body.theme-minimal h1 {
+    color: #222;
+  }
+  body.theme-minimal #friendly-msg {
+    color: #555;
+  }
+  body.theme-minimal form {
+    background: #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  }
+  body.theme-minimal label {
+    color: #444;
+  }
+  body.theme-minimal input, body.theme-minimal textarea {
+    border-color: #ccc;
+    background: #fff;
+    color: #222;
+  }
+  body.theme-minimal input:focus, body.theme-minimal textarea:focus {
+    border-color: #888;
+  }
+  body.theme-minimal button {
+    background: #444;
+  }
+  body.theme-minimal button:hover {
+    background: #222;
+  }
+  body.theme-minimal #wishes-container {
+    background: #fff;
+    color: #333;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  }
+
 </style>
 </head>
-<body>
-  <canvas id="confettiCanvas" aria-hidden="true"></canvas>
-  <div class="hearts" aria-hidden="true"></div>
+<body class="theme-cute">
 
-  <main role="main" aria-label="Birthday wishes for Nini" tabindex="-1">
-    <h1>Happy Birthday, Sameeha!</h1>
-    <h2>(Nickname: Nini)</h2>
+<div id="confetti-container"></div>
 
-    <div class="cake-container" tabindex="0" role="img" aria-describedby="cake-desc" aria-label="Birthday cake with candle">
-      <div class="cake" >
-        <div class="frosting"></div>
-        <div class="cake-base"></div>
-        <div class="candle" aria-hidden="true">
-          <div class="flame"></div>
-        </div>
-      </div>
-      <p id="cake-desc" class="sr-only">A cute birthday cake with a candle that flickers when you click or press enter</p>
-    </div>
+<div id="theme-toggle-container">
+  <label for="theme-select" style="font-weight:600; margin-right:8px;">Theme:</label>
+  <select id="theme-select" aria-label="Select theme">
+    <option value="cute" selected>Cute 🎀</option>
+    <option value="elegant">Elegant 💎</option>
+    <option value="minimal">Minimal 🧼</option>
+  </select>
+</div>
 
-    <form id="wishForm" aria-label="Write your birthday wish">
-      <textarea id="wishInput" name="wish" placeholder="Write your birthday wish here..." aria-required="true" maxlength="150" aria-describedby="charCount"></textarea>
-      <div id="charCount" aria-live="polite">0 / 150</div>
-      <button type="submit" aria-label="Send birthday wish">Send 🎉</button>
-      <button type="button" id="clearWishesBtn" aria-label="Clear all wishes" style="margin-left:1rem;">Clear All Wishes</button>
-    </form>
+<h1>🎉 Happy Birthday! 🎂</h1>
+<p id="friendly-msg">Wishing you a day filled with laughter, love, and all your favorite things! Enjoy every moment. 🥳</p>
 
-    <div class="replies-list" id="replies" aria-live="polite" aria-relevant="additions"></div>
-
-    <div class="toggles" role="region" aria-label="Controls">
-      <button id="musicToggle" class="toggle-btn" aria-pressed="false" aria-label="Toggle birthday music">🎵 Music On</button>
-      <button id="darkToggle" class="toggle-btn" aria-pressed="false" aria-label="Toggle dark mode">🌙 Dark Mode</button>
-      <button id="surpriseBtn" class="toggle-btn" aria-label="Show surprise message">🎁 Surprise!</button>
-    </div>
-  </main>
-
-  <div class="popup" id="popup" role="dialog" aria-modal="true" aria-labelledby="popupTitle" aria-describedby="popupDesc" tabindex="-1">
-    <div id="popupTitle">Surprise! 🎉</div>
-    <div id="popupDesc">Nini, you are loved more than words can say! 💖 Have the best birthday ever!</div>
-    <button class="close-popup" id="closePopupBtn" aria-label="Close surprise message">Close</button>
+<div id="main-container">
+  <div id="cake" aria-label="Birthday cake with candles">
+    <div class="candle"><div class="flame"></div></div>
+    <div class="candle"><div class="flame"></div></div>
+    <div class="candle"><div class="flame"></div></div>
   </div>
 
-  <audio id="bgMusic" loop src="https://cdn.pixabay.com/download/audio/2022/03/27/audio_6e3039b03b.mp3?filename=happy-birthday-music-13475.mp3" preload="auto"></audio>
-  <div id="toastMessage" role="alert" aria-live="assertive"></div>
+  <form id="wish-form" aria-label="Send birthday wish form">
+    <label for="sender-name">Your Name (optional):</label>
+    <input type="text" id="sender-name" placeholder="Enter your name" autocomplete="off" />
+
+    <label for="wish-msg">Write your birthday wish:</label>
+    <textarea id="wish-msg" placeholder="Type your warm wishes here..."></textarea>
+    <div id="charCount" aria-live="polite"></div>
+
+    <button type="submit" aria-label="Send birthday wish">Send Wish</button>
+  </form>
+
+  <div id="wishes-container" aria-live="polite" aria-relevant="additions" tabindex="0">
+    <!-- Wishes will appear here -->
+  </div>
+</div>
 
 <script>
-  /* --- Utility --- */
-  function escapeHTML(str){return str.replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
+  // Theme toggling
+  const themeSelect = document.getElementById('theme-select');
+  themeSelect.addEventListener('change', e => {
+    document.body.classList.remove('theme-cute', 'theme-elegant', 'theme-minimal');
+    document.body.classList.add(`theme-${e.target.value}`);
+  });
 
-  /* --- Cake Candle --- */
-  const cakeContainer = document.querySelector('.cake-container');
-  const flame = document.querySelector('.flame');
-  let candleLit = false;
-  function toggleFlame(){ candleLit = !candleLit; flame.classList.toggle('visible', candleLit); }
-  cakeContainer.addEventListener('click', toggleFlame);
-  cakeContainer.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); toggleFlame(); }});
+  // Confetti generator
+  const confettiContainer = document.getElementById('confetti-container');
 
-  /* --- Hearts --- */
-  const heartsContainer = document.querySelector('.hearts');
-  function createHeart(){ const heart=document.createElement('div'); heart.classList.add('heart'); heart.style.left=Math.random()*100+'vw'; heart.style.animationDuration=6+Math.random()*6+'s'; heartsContainer.appendChild(heart); setTimeout(()=>heart.remove(),9000);}
-  setInterval(createHeart,1200);
+  function createConfettiPiece() {
+    const confetti = document.createElement('div');
+    confetti.classList.add('confetti');
+    confetti.style.left = Math.random() * window.innerWidth + 'px';
+    confetti.style.animationDuration = (3 + Math.random() * 3) + 's';
+    confetti.style.animationDelay = (Math.random() * 5) + 's';
+    confetti.style.backgroundColor = randomColor();
+    confettiContainer.appendChild(confetti);
 
-  /* --- Confetti --- */
-  const canvas=document.getElementById('confettiCanvas'); const ctx=canvas.getContext('2d');
-  let W,H; function resizeCanvas(){ W=window.innerWidth; H=window.innerHeight; canvas.width=W; canvas.height=H; }
-  let resizeTimeout; window.addEventListener('resize',()=>{ clearTimeout(resizeTimeout); resizeTimeout=setTimeout(resizeCanvas,150); });
-  resizeCanvas();
-  class ConfettiParticle{constructor(){this.x=Math.random()*W;this.y=Math.random()*H-H;this.size=8+Math.random()*8;this.color=`hsl(${Math.random()*360},70%,70%)`;this.speedY=1+Math.random()*2;this.speedX=(Math.random()-0.5)*1.5;this.tilt=Math.random()*10;this.tiltSpeed=0.05+Math.random()*0.05;this.tiltAngle=0;this.popScale=0;this.popped=false;}
-  update(){this.y+=this.speedY; this.x+=this.speedX; this.tiltAngle+=this.tiltSpeed; this.tilt=Math.sin(this.tiltAngle)*15; if(!this.popped && this.y>H-30){this.popScale=1; this.popped=true;} if(this.popScale>0)this.popScale-=0.05; if(this.y>H){this.x=Math.random()*W; this.y=-10-Math.random()*100; this.popScale=0; this.popped=false;}}
-  draw(ctx){ctx.save(); ctx.translate(this.x+this.tilt,this.y); if(this.popScale>0){ctx.scale(1+this.popScale,1+this.popScale); ctx.globalAlpha=this.popScale;} ctx.fillStyle=this.color; ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(this.size/2,this.size/2); ctx.lineTo(this.size,0); ctx.lineTo(this.size/2,-this.size/2); ctx.closePath(); ctx.fill(); ctx.restore(); ctx.globalAlpha=1;}}
-  const confettis=[]; const maxConfetti=120; function initConfetti(){confettis.length=0; for(let i=0;i<maxConfetti;i++) confettis.push(new ConfettiParticle());} initConfetti();
-  function animateConfetti(){ ctx.clearRect(0,0,W,H); confettis.forEach(c=>{c.update();c.draw(ctx);}); requestAnimationFrame(animateConfetti);} animateConfetti();
+    setTimeout(() => {
+      confetti.remove();
+    }, 6000);
+  }
 
-  /* --- Wishes --- */
-  const wishForm=document.getElementById('wishForm'); const wishInput=document.getElementById('wishInput'); const replies=document.getElementById('replies'); const charCount=document.getElementById('charCount'); const toast=document.getElementById('toastMessage');
-  function updateCharCount(){ const l=wishInput.value.length; charCount.textContent=`${l} / 150`; charCount.classList.toggle('alert', l>140); }
-  wishInput.addEventListener('input', updateCharCount); updateCharCount();
-  function sanitize(text){return escapeHTML(text.trim());}
-  function saveReplies(){ localStorage.setItem('birthdayReplies', JSON.stringify(Array.from(replies.children).map(r=>r.textContent))); }
-  function loadReplies(){ (JSON.parse(localStorage.getItem('birthdayReplies')||'[]')).forEach(t=>addReply(t,false)); }
-  function addReply(text,scroll=true){ const div=document.createElement('div'); div.className='reply-item'; div.textContent=text; replies.insertBefore(div,replies.firstChild); while(replies.children.length>50) replies.removeChild(replies.lastChild); saveReplies(); if(scroll) replies.firstElementChild?.scrollIntoView({behavior:'smooth'});}
-  function showToast(message){ toast.textContent=message; toast.classList.add('show'); setTimeout(()=>toast.classList.remove('show'),2500);}
-  wishForm.addEventListener('submit', e=>{e.preventDefault(); const text=sanitize(wishInput.value); if(text.length<3){showToast('Please write a longer wish!'); return;} addReply(text); wishInput.value=''; updateCharCount(); showToast(["Thanks for the lovely wish! 💖","That made Nini's day! 🎂","So sweet of you! 🌸","Wish added with love! 🎁","Nini says thanks! 🥰"][Math.floor(Math.random()*5)]);});
-  document.getElementById('clearWishesBtn').addEventListener('click',()=>{ if(confirm("Are you sure you want to clear all wishes? This action cannot be undone.")){ replies.innerHTML=''; saveReplies(); showToast('All wishes cleared!');}});
-  loadReplies();
+  function randomColor() {
+    const colors = ['#f25c6c', '#ffc759', '#72d6c9', '#ff9cc1', '#4d90fe'];
+    return colors[Math.floor(Math.random() * colors.length)];
+  }
 
-  /* --- Music Toggle --- */
-  const music=document.getElementById('bgMusic'); const musicToggle=document.getElementById('musicToggle');
-  function playMusic(){ music.play(); musicToggle.textContent="🔇 Music Off"; musicToggle.setAttribute('aria-pressed','true'); flame.classList.add('visible'); candleLit=true;}
-  function stopMusic(){ music.pause(); musicToggle.textContent="🎵 Music On"; musicToggle.setAttribute('aria-pressed','false'); flame.classList.remove('visible'); candleLit=false;}
-  musicToggle.addEventListener('click',()=>music.paused?playMusic():stopMusic());
+  // Generate confetti continuously
+  setInterval(createConfettiPiece, 150);
 
-  /* --- Dark Mode --- */
-  const darkToggle=document.getElementById('darkToggle');
-  function applyDark(saved){ if(saved){document.body.classList.add('dark'); darkToggle.setAttribute('aria-pressed','true'); darkToggle.textContent="☀️ Light Mode";} else {document.body.classList.remove('dark'); darkToggle.setAttribute('aria-pressed','false'); darkToggle.textContent="🌙 Dark Mode";}}
-  darkToggle.addEventListener('click',()=>{ const isDark=!document.body.classList.contains('dark'); applyDark(isDark); localStorage.setItem('darkMode',isDark?'true':'false');});
-  applyDark(localStorage.getItem('darkMode')==='true');
+  // Balloon generator
+  function createBalloon() {
+    const colors = ['red', 'blue', 'green', 'pink', 'orange'];
+    const balloon = document.createElement('div');
+    balloon.classList.add('balloon');
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    balloon.classList.add(color);
 
-  /* --- Surprise Popup --- */
-  const popup=document.getElementById('popup'); const surpriseBtn=document.getElementById('surpriseBtn'); const closePopupBtn=document.getElementById('closePopupBtn');
-  function trapFocus(element){ const focusable=element.querySelectorAll('button,[href],input,select,textarea,[tabindex]:not([tabindex="-1"])'); const first=focusable[0]; const last=focusable[focusable.length-1]; element.addEventListener('keydown', e=>{if(e.key==='Tab'){if(e.shiftKey){if(document.activeElement===first){ e.preventDefault(); last.focus();}}else{if(document.activeElement===last){ e.preventDefault(); first.focus();}}}else if(e.key==='Escape'){ closePopup();}});}
-  function openPopup(){ popup.classList.remove('hide'); popup.classList.add('show'); popup.setAttribute('aria-hidden','false'); popup.focus(); }
-  function closePopup(){ popup.classList.remove('show'); popup.classList.add('hide'); popup.setAttribute('aria-hidden','true'); surpriseBtn.focus(); setTimeout(()=>popup.classList.remove('hide'),300);}
-  surpriseBtn.addEventListener('click',()=>openPopup());
-  closePopupBtn.addEventListener('click',()=>closePopup());
-  trapFocus(popup);
+    balloon.style.left = (Math.random() * (window.innerWidth - 60) + 20) + 'px';
+    balloon.style.animationDuration = (8 + Math.random() * 4) + 's';
+    balloon.style.animationDelay = (Math.random() * 10) + 's';
+
+    confettiContainer.appendChild(balloon);
+
+    // Remove balloon after animation (approx 30s)
+    setTimeout(() => {
+      balloon.remove();
+    }, 30000);
+  }
+
+  // Create a balloon every 4 seconds
+  setInterval(createBalloon, 4000);
+
+  // Message input and form handling
+  const wishForm = document.getElementById('wish-form');
+  const wishMsg = document.getElementById('wish-msg');
+  const charCount = document.getElementById('charCount');
+  const wishesContainer = document.getElementById('wishes-container');
+  const senderName = document.getElementById('sender-name');
+
+  // No max char limit but show current char count
+  function updateCharCount() {
+    const length = wishMsg.value.length;
+    charCount.textContent = length > 0 ? `Characters: ${length}` : '';
+  }
+  wishMsg.addEventListener('input', updateCharCount);
+  updateCharCount();
+
+  wishForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const msg = wishMsg.value.trim();
+    if (!msg) {
+      alert('Please write your birthday wish before sending.');
+      return;
+    }
+
+    const name = senderName.value.trim() || 'Anonymous';
+
+    // Create wish item
+    const wishItem = document.createElement('div');
+    wishItem.className = 'wish-item';
+    wishItem.innerHTML = `<span class="wish-name">${escapeHtml(name)} says:</span> <br>${escapeHtml(msg)}`;
+    wishesContainer.prepend(wishItem);
+
+    // Clear form
+    wishMsg.value = '';
+    senderName.value = '';
+    updateCharCount();
+
+    // Focus back to message box
+    wishMsg.focus();
+  });
+
+  // Simple HTML escape to prevent injection
+  function escapeHtml(text) {
+    return text.replace(/[&<>"']/g, function(m) {
+      return ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+      })[m];
+    });
+  }
 </script>
 </body>
 </html>
